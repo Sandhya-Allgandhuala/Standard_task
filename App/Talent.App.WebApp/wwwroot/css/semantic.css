@@ -1541,6 +1541,13 @@ body .ui.inverted::-webkit-scrollbar-thumb {
         vertical-align: top;
     }
 
+.circle-icon {
+    background: #ffc0c0;
+    padding: 30px;
+    border-radius: 50%;
+}
+
+
 /*-------------------
         Basic
 --------------------*/
@@ -25661,7 +25668,26 @@ Floated Menu / Item
         -webkit-transition: color 0.1s ease;
         transition: color 0.1s ease;
     }
-
+    .ui.cards > .card > .extra1,
+    .ui.card > .extra1 {
+        max-width: 100%;
+        min-height: 0em !important;
+        -webkit-box-flex: 0;
+        -ms-flex-positive: 0;
+        flex-grow: 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
+        position: static;
+        background: none;
+        width: auto;
+        margin: 0em 0em;
+        padding: 0.75em 1em;
+        top: 0em;
+        left: 0em;
+        color: rgba(0, 0, 0, 0.8);
+        box-shadow: none;
+        -webkit-transition: color 0.1s ease;
+        transition: color 0.1s ease;
+    }
         .ui.cards > .card > .extra a:not(.ui),
         .ui.card > .extra a:not(.ui) {
             color: rgba(0, 0, 0, 0.4);

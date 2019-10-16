@@ -20,32 +20,109 @@ export default class TalentFeed extends React.Component {
             loadPosition: 0,
             feedData: [],
             watchlist: [],
+            
+            companyContact: {
+                location: {}
+            },
+
+            
             loaderData: loader,
             loadingFeedData: false,
             companyDetails: null
         }
 
         this.init = this.init.bind(this);
+        this.TalentData = this.TalentData.bind(this);
+        this.loadData = this.loadData.bind(this)
 
     };
 
     init() {
-        let loaderData = TalentUtil.deepCopy(this.state.loaderData)
+        let loaderData = TalentUtil.deepCopy(this.state.loaderData) 
         loaderData.isLoading = false;
         this.setState({ loaderData });//comment this
     }
 
     componentDidMount() {
         //window.addEventListener('scroll', this.handleScroll);
-        this.init()
+        this.loadData();
+        this.TalentData()
+       
     };
 
-   
+    loadData() {
+        var cookies = Cookies.get('talentAuthToken');
+        $.ajax({
+            url: 'http://localhost:60290/Profile/Profile/GetEmployerProfile',
+            headers: {
+                'Authorization': 'Bearer ' + cookies,
+                'Content-Type': 'application/json'
+            },
+            type: "GET",
+            contentType: "application/json",
+            dataType: "json",
+            success: function (res) {
+                let newValues = res.employer.companyContact;
+                this.setState({
+                    companyContact: newValues,
+                });
+                
+            }.bind(this)
+        })
+        this.init()
+    }
+    TalentData() {
+        
+        
+        var cookies = Cookies.get('talentAuthToken');
+        $.ajax({
+            url: 'http://localhost:60290/Profile/Profile/getTalent?Number=5&Position=0',
+            headers: {
+                'Authorization': 'Bearer ' + cookies,
+                'Content-Type': 'application/json'
+            },
+            type: "GET",
+            contentType: "application/json",
+            dataType: "json",
+            success: function (res) {
+                let newValues = res.data;
+                this.setState({
+                    feedData: newValues,
+                });
+                console.log(this.state.feedData);
+            }.bind(this)
+        })
+        this.init()
+    }
     render() {
 
         return (
             <BodyWrapper reload={this.init} loaderData={this.state.loaderData}>
-                <div className="ui container">Your code goes here</div>
+                <div className="ui container">
+                    <div className="ui container">
+                        <div className="profile">
+                            <form className="ui form">
+                                <div className="ui grid">
+                                    <div className="ui three cards">                                                                                                    
+                                        <CompanyProfile
+                                            companydetails={this.state.companyContact}
+                                            companylocation={this.state.companyContact.location}                                            
+                                        />
+
+                                        <TalentCard
+                                            talentDetails={this.state.feedData}
+                                    />
+                                        
+                                <FollowingSuggestion
+                                />
+                            
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </BodyWrapper>
         )
     }

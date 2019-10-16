@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Amazon.S3.Model;
 using Microsoft.AspNetCore.Hosting;
@@ -27,20 +28,27 @@ namespace Talent.Common.Services
 
         public async Task<string> GetFileURL(string id, FileType type)
         {
-            //Your code here;
-            throw new NotImplementedException();
+            string bucketName = "talentdataphotoupload";
+            String url = await _awsService.GetStaticUrl(id, bucketName);
+            return url;
         }
 
         public async Task<string> SaveFile(IFormFile file, FileType type)
         {
-            //Your code here;
-            throw new NotImplementedException();
+           
+            string bucketName= "talentdataphotoupload";
+            string filename = file.FileName;
+            var reader = file.OpenReadStream();
+            await _awsService.PutFileToS3(filename, reader, bucketName, true);
+            return filename;
+            
         }
 
         public async Task<bool> DeleteFile(string id, FileType type)
         {
-            //Your code here;
-            throw new NotImplementedException();
+            string bucketName = "talentdataphotoupload";
+            await _awsService.RemoveFileFromS3(id, bucketName);
+            return true;
         }
 
 

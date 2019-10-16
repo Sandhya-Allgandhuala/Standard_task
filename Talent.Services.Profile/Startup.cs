@@ -51,6 +51,7 @@ namespace Talent.Services.Profile
             services.Configure<FormOptions>(x =>
             {
                 x.ValueLengthLimit = int.MaxValue;
+                //x.ValueLengthLimit = 1024 * 1024 * 100;
                 x.MultipartBodyLengthLimit = int.MaxValue;
                 x.MultipartHeadersLengthLimit = int.MaxValue;
             });

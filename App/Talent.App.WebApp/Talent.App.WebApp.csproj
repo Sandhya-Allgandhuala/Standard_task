@@ -11,6 +11,10 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="wwwroot\js\react\node_modules\**" />
     <Compile Remove="wwwroot\js\react\ReactScripts\NewFolder\**" />

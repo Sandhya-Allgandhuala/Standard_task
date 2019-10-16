@@ -24,6 +24,7 @@ export default class AccountProfile extends React.Component {
 
         this.state = {
             profileData: {
+                
                 address: {},
                 nationality: '',
                 education: [],
@@ -44,6 +45,7 @@ export default class AccountProfile extends React.Component {
                 }
             },
             loaderData: loaderData,
+            id:"",
 
         }
 
@@ -69,12 +71,14 @@ export default class AccountProfile extends React.Component {
     loadData() {
         var cookies = Cookies.get('talentAuthToken');
         $.ajax({
-            url: 'http://localhost:60290/profile/profile/getTalentProfile',
+            url: 'http://localhost:60290/Profile/Profile/getTalentProfile',
             headers: {
                 'Authorization': 'Bearer ' + cookies,
                 'Content-Type': 'application/json'
             },
             type: "GET",
+            contentType: "application/json",
+            dataType: "json",
             success: function (res) {
                 this.updateWithoutSave(res.data)
             }.bind(this)
@@ -84,13 +88,18 @@ export default class AccountProfile extends React.Component {
     //updates component's state without saving data
     updateWithoutSave(newValues) {
         let newProfile = Object.assign({}, this.state.profileData, newValues)
+        
         this.setState({
-            profileData: newProfile
+            profileData: newProfile,
+            
         })
+
+        
     }
 
     //updates component's state and saves data
     updateAndSaveData(newValues) {
+        console.log("logdata", newValues);
         let newProfile = Object.assign({}, this.state.profileData, newValues)
         this.setState({
             profileData: newProfile
@@ -115,6 +124,7 @@ export default class AccountProfile extends React.Component {
                 console.log(res)
                 if (res.success == true) {
                     TalentUtil.notification.show("Profile updated sucessfully", "success", null, null)
+                    this.loadData();
                 } else {
                     TalentUtil.notification.show("Profile did not update successfully", "error", null, null)
                 }
@@ -151,6 +161,17 @@ export default class AccountProfile extends React.Component {
                                                 linkedAccounts={this.state.profileData.linkedAccounts}
                                                 updateProfileData={this.updateWithoutSave}
                                                 saveProfileData={this.updateAndSaveData}
+                                            />
+                                        </FormItemWrapper>
+                                        <FormItemWrapper
+                                            title='Self Introduction'
+                                            tooltip='Enter your Self Introduction'
+                                        >
+                                        <SelfIntroduction
+                                            summary={this.state.profileData.summary}
+                                            description={this.state.profileData.description}
+                                            updateProfileData={this.updateAndSaveData}
+                                            updateWithoutSave={this.updateWithoutSave}
                                             />
                                         </FormItemWrapper>
                                         <FormItemWrapper
@@ -252,7 +273,7 @@ export default class AccountProfile extends React.Component {
                                             tooltip='Please upload your profile photo'
                                             hideSegment={true}
                                         >
-                                            <PhotoUpload
+                                            <PhotoUpload                                               
                                                 imageId={this.state.profileData.profilePhotoUrl}
                                                 updateProfileData={this.updateWithoutSave}
                                                 savePhotoUrl='http://localhost:60290/profile/profile/updateProfilePhoto'
@@ -281,12 +302,7 @@ export default class AccountProfile extends React.Component {
                                                 saveCVUrl={'http://localhost:60290/profile/profile/updateTalentCV'}
                                             />
                                         </FormItemWrapper>
-                                        <SelfIntroduction
-                                            summary={this.state.profileData.summary}
-                                            description={this.state.profileData.description}
-                                            updateProfileData={this.updateAndSaveData}
-                                            updateWithoutSave={this.updateWithoutSave}
-                                        />
+                                        
                                     </div>
                                 </form>
                             </div >
