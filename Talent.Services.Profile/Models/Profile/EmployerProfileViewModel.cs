@@ -9,6 +9,7 @@ namespace Talent.Services.Profile.Models.Profile
     public class EmployerProfileViewModel
     {
         public string Id { get; set; }
+        //public List<string> EmployeeIds { get; set; } // added on 15/02/2020
         public ContactDetail CompanyContact { get; set; }
         public ContactDetail PrimaryContact { get; set; }
         public string ProfilePhoto { get; set; }

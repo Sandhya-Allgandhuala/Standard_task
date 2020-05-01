@@ -478,8 +478,10 @@ namespace Talent.Services.Profile.Domain.Services
                             PhotoId = item.ProfilePhotoUrl,
                             Visa = item.VisaStatus,
                             Summary = item.Summary,
-                            VideoUrl = item.VideoName
-                            
+                            VideoUrl = item.VideoName,
+                            Skills = item.Skills.Select(x => x.Skill).ToList()
+
+
                         };
                         result.Add(newItem);
                     }

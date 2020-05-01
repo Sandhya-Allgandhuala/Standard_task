@@ -14,6 +14,7 @@ namespace Talent.Common.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
+        public List<string> EmployeeIds { get; set; } // added on 17/02/2020
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }

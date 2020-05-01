@@ -45,7 +45,7 @@ export class Images extends React.Component {
 
                 if (res.employerProfile.length > 0) {
                     for (var i = 0; i < res.employerProfile.length; i++) {
-                        imageSrcArr.push("http://localhost:60290/profile/profile/getEmployerProfileImages/?Id=" + res.employerProfile[i].fileName);
+                        imageSrcArr.push("http://standardtaskprofileservice.ap-southeast-2.elasticbeanstalk.com/profile/profile/getEmployerProfileImages/?Id=" + res.employerProfile[i].fileName);
                         imageIdArr.push(res.employerProfile[i].id);
                         selectedFileArr.push("");
                     }

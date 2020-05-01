@@ -3,12 +3,14 @@ import React from 'react';
 import Cookies from 'js-cookie';
 import { Table, Form, Button, Icon, Confirm, Container } from "semantic-ui-react";
 import { ChildSingleInput } from '../Form/SingleInput.jsx';
+import DatePicker from "react-datepicker";
+import moment from 'moment';
 
 export default class Experience extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            experience: {                
+            experience: {
                 company: "",
                 position: "",
                 responsibilities: "",
@@ -27,23 +29,31 @@ export default class Experience extends React.Component {
         this.handleChange = this.handleChange.bind(this)
         this.saveContact = this.saveContact.bind(this)
         this.openAdd = this.openAdd.bind(this)
+
         this.closeAdd = this.closeAdd.bind(this)
-        
+
     };
 
 
     handleChange(event) {
         const data = Object.assign({}, this.state.experience)
+
         data[event.target.name] = event.target.value,
             this.setState({
                 experience: data
             })
+
     }
 
     openAdd() {
         const ExperienceData = Object.assign({}, this.props.experienceData)
         this.setState({
             showAddSection: true,
+            company: "",
+            position: "",
+            responsibilities: "",
+            start: "",
+            end: ""
         })
     }
 
@@ -56,18 +66,23 @@ export default class Experience extends React.Component {
     editComponent(index) {
 
         var oldexperience = Object.assign([], this.props.experienceData)
-       var company = oldexperience[index].company;
-       var position = oldexperience[index].position;
+        var company = oldexperience[index].company;
+        var position = oldexperience[index].position;
         var responsibilities = oldexperience[index].responsibilities;
         var start = oldexperience[index].start;
         var end = oldexperience[index].end;
+        //var startdate = new Date(start);
+        //startdate.toDateString();
+
+        var enddate = new Date(end);
+        var enddate1 = enddate.toDateString();
 
         this.setState({
             company: company,
             position: position,
             responsibilities: responsibilities,
             start: start,
-            end: end,
+            end: enddate1,
             editedIndex: index
         });
     }
@@ -107,16 +122,23 @@ export default class Experience extends React.Component {
     }
 
     saveContact() {
-        console.log("state",this.state.experience)
+        console.log("state", this.state.experience)
         console.log("props", this.props.experienceData)
         var oldexperience = Object.assign([], this.props.experienceData)
         var newrecord = Object.assign({}, this.state.experience)
-        oldexperience.push(newrecord);
-        var updateexperience = {
-            experience: oldexperience
-        }        
-        this.props.updateProfileData(updateexperience)
-        this.closeAdd();
+        if (newrecord.company == "" || newrecord.position == "" || newrecord.responsibilities == "" || newrecord.start == "" || newrecord.end == "") {
+            TalentUtil.notification.show("Please fill the details", "error", null, null)
+        }
+        else {
+            oldexperience.push(newrecord);
+            var updateexperience = {
+                experience: oldexperience
+            }
+            this.props.updateProfileData(updateexperience)
+            this.closeAdd();
+        }
+
+
     }
 
     Deleteexperience(recordToDelete) {
@@ -160,8 +182,9 @@ export default class Experience extends React.Component {
         })
     }
 
-    
+
     render() {
+
         let { editedIndex } = this.state;
         let deleteBtn = record => (
             <i className="delete icon" onClick={() => this.Deleteexperience(record)}>
@@ -184,7 +207,7 @@ export default class Experience extends React.Component {
                 Cancel
             </button>
         );
-        let editcompany =(
+        let editcompany = (
 
             <div>
                 <ChildSingleInput
@@ -193,21 +216,22 @@ export default class Experience extends React.Component {
                     name="company"
                     value={this.state.company}
                     controlFunc={(event) => this.handleCompanyChange(event)}
-                    maxLength={80}
-                    errorMessage=""
+                    maxLength={15}
+                    errorMessage="length should be maximum 15 characters"
                 /></div>
         );
-        let editposition =(<div>
+        let editposition = (<div>
             <ChildSingleInput
                 inputType="text"
                 label="Position"
                 name="position"
                 value={this.state.position}
                 controlFunc={(event) => this.handlepositionChange(event)}
-                maxLength={80}
-                errorMessage=""
+
+                maxLength={15}
+                errorMessage="length should be maximum 15 characters"
             />
-            </div>
+        </div>
         );
 
         let editstart = (
@@ -218,13 +242,15 @@ export default class Experience extends React.Component {
                     label="StartDate"
                     name="start"
                     value={this.state.start}
+
                     controlFunc={(event) => this.handlestartChange(event)}
                     maxLength={80}
-                    errorMessage=""
+                    errorMessage=" "
                 />
+
             </div>
         );
-            let editend = (
+        let editend = (
             <div>
 
                 <ChildSingleInput
@@ -232,9 +258,9 @@ export default class Experience extends React.Component {
                     label="EndDate"
                     name="end"
                     value={this.state.end}
-                        controlFunc={(event) => this.handleendChange(event)}
-                        maxLength={80}
-                        errorMessage=""
+                    controlFunc={(event) => this.handleendChange(event)}
+                    maxLength={80}
+                    errorMessage="length should be maximum 80 characters"
                 />
             </div>
         );
@@ -247,14 +273,14 @@ export default class Experience extends React.Component {
                     name="responsibilities"
                     value={this.state.responsibilities}
                     controlFunc={(event) => this.handleresponsibilitiesChange(event)}
-                    maxLength={80}
-                    errorMessage=""
+                    maxLength={30}
+                    errorMessage="length should be maximum 30 characters"
                 />
             </div>
         );
-        
+
         return (
-            <Container style={{paddingTop: '20px', paddingBottom: '20px'}}>
+            <Container style={{ paddingTop: '20px', paddingBottom: '20px' }}>
                 <React.Fragment>
                     <div className='ui six wide column'>
                         {
@@ -267,18 +293,18 @@ export default class Experience extends React.Component {
                                             name="company"
                                             value={this.state.experience.company}
                                             controlFunc={this.handleChange}
-                                            maxLength={80}
-                                            errorMessage=""
+                                            maxLength={15}
+                                            errorMessage="length should be maximum 15 characters"
                                         />
-                                    
-                                        <ChildSingleInput 
+
+                                        <ChildSingleInput
                                             inputType="text"
                                             label="Position"
                                             name="position"
                                             value={this.state.experience.position}
                                             controlFunc={this.handleChange}
-                                            maxLength={80}
-                                            errorMessage=""
+                                            maxLength={15}
+                                            errorMessage="length should be maximum 15 characters"
                                         />
                                     </div>
                                     <div className='two fields'>
@@ -301,21 +327,21 @@ export default class Experience extends React.Component {
                                             errorMessage=""
                                         />
                                     </div>
-                                        <ChildSingleInput
-                                            inputType="text"                                          
-                                            label="Responsibilities"
-                                            name="responsibilities"
-                                            value={this.state.experience.responsibilities}
-                                            controlFunc={this.handleChange}
-                                        maxLength={80}
-                                        errorMessage=""
-                                        />                                                                       
+                                    <ChildSingleInput
+                                        inputType="text"
+                                        label="Responsibilities"
+                                        name="responsibilities"
+                                        value={this.state.experience.responsibilities}
+                                        controlFunc={this.handleChange}
+                                        maxLength={30}
+                                        errorMessage="length should be maximum 30 characters"
+                                    />
                                     <button type="button" className="ui teal button" onClick={this.saveContact}>Save</button>
                                     <button type="button" className="ui button" onClick={this.closeAdd}>Cancel</button>
-                                   
-                                    </div>
-                            : null
-                    }
+
+                                </div>
+                                : null
+                        }
                         <div className="ui sixteen wide column">
                             <Table striped>
                                 <Table.Header>
@@ -324,7 +350,7 @@ export default class Experience extends React.Component {
                                         <Table.HeaderCell>Position</Table.HeaderCell>
                                         <Table.HeaderCell>StartDate</Table.HeaderCell>
                                         <Table.HeaderCell>EndDate</Table.HeaderCell>
-                                        <Table.HeaderCell>Responsibilities</Table.HeaderCell>                                       
+                                        <Table.HeaderCell>Responsibilities</Table.HeaderCell>
                                         <Table.HeaderCell>
                                             <button type="button" className="ui teal button right floated" onClick={this.openAdd}><i className="plus icon"></i>AddNew</button></Table.HeaderCell>
                                     </Table.Row>
@@ -345,13 +371,13 @@ export default class Experience extends React.Component {
                                                 </Table.Cell>
                                                 <Table.Cell>
                                                     {this.props.experienceData.indexOf(record) === editedIndex
-                                                    ? editstart
-                                                    : record.start}
+                                                        ? editstart
+                                                        : moment(record.start).format("MMM Do YYYY")}
                                                 </Table.Cell>
                                                 <Table.Cell>
                                                     {this.props.experienceData.indexOf(record) === editedIndex
-                                                    ? editend
-                                                    : record.end}
+                                                        ? editend
+                                                        : moment(record.end).format("MMM Do YYYY")}
                                                 </Table.Cell>
                                                 <Table.Cell>{this.props.experienceData.indexOf(record) === editedIndex
                                                     ? editresponsibilities
@@ -368,7 +394,7 @@ export default class Experience extends React.Component {
                                             </Table.Row>
                                         );
                                     })}
-                                </Table.Body>                               
+                                </Table.Body>
                             </Table>
                         </div>
                     </div>

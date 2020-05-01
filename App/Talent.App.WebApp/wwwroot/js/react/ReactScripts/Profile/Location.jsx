@@ -10,14 +10,25 @@ export class Address extends React.Component {
             : {
                 number: "",
                 street: "",
-                suburb: "",                
+                suburb: "",
                 postCode: "",
                 country: "",
                 city: "",
-            }        
+            }
         this.state = {
             showEditSection: false,
-            newAddress: addressData,                                    
+            newAddress: {
+                number: addressData.number || "",
+                street: addressData.street || "",
+                suburb: addressData.suburb || "",
+                postCode: addressData.postCode || "",
+                country: addressData.country || "",
+                city: addressData.city || "",
+
+
+
+
+            }
         }
 
         this.openEdit = this.openEdit.bind(this)
@@ -26,9 +37,9 @@ export class Address extends React.Component {
         this.saveContact = this.saveContact.bind(this)
         this.renderEdit = this.renderEdit.bind(this)
         this.renderDisplay = this.renderDisplay.bind(this)
-        
+
     }
-    
+
     openEdit() {
         const addressData = Object.assign({}, this.props.addressData)
         this.setState({
@@ -45,11 +56,20 @@ export class Address extends React.Component {
 
 
     handleChange(event) {
-        
-        const data = Object.assign({}, this.state.newAddress)
-        data[event.target.name] = event.target.value
 
-        this.setState({ 
+        const data = Object.assign({}, this.state.newAddress)
+        const name = event.target.name;
+        let value = event.target.value;
+        const id = event.target.id;
+
+        data[name] = value;
+        if (name == "country") {
+            data["city"] = "";
+        }
+
+        data[name] = value
+
+        this.setState({
             newAddress: data
         })
     }
@@ -191,7 +211,7 @@ export class Nationality extends React.Component {
     handleChange(event) {
         let data = {};
         data[event.target.name] = event.target.value;
-    
+
         this.setState({
             nationality: event.target.value
         })
@@ -217,6 +237,6 @@ export class Nationality extends React.Component {
             </div>
         )
 
-       
+
     }
 }
