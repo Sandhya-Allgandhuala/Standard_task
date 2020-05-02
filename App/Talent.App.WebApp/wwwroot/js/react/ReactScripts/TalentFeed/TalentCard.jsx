@@ -88,8 +88,8 @@ export default class TalentCard extends React.Component {
                 
                     <div className="extra1 content" style={{ paddingLeft: '50px', paddingRight: '50px' }}>
                         <a >{this.props.talentDetails.indexOf(record) === editedIndex && this.state.ishidden ?
-                            <Icon className="large video icon" onClick={() => this.userVideo(this.props.talentDetails.indexOf(record))} /> :
-                            <Icon className="large user icon" onClick={() => this.userProfile(this.props.talentDetails.indexOf(record))} />
+                            <Icon className="large user icon" onClick={() => this.userVideo(this.props.talentDetails.indexOf(record))} /> :
+                            <Icon className="large video icon"  onClick={() => this.userProfile(this.props.talentDetails.indexOf(record))} />
                             }
                         </a>
 
