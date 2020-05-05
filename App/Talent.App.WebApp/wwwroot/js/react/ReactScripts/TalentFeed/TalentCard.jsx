@@ -53,6 +53,22 @@ export default class TalentCard extends React.Component {
                     </div>
                     <div>
                         {this.props.talentDetails.indexOf(record) === editedIndex && this.state.ishidden ?
+                            
+                            <div className="inline fields" style={{ paddingBottom: '0px' }}>
+                                <div className="image">
+                                    <img src="/images/background-img.png" height="250" width="250px" />
+                                </div>
+                                <div className="" style={{ paddingLeft: '20px' }}>
+                                    <div style={{ fontWeight: 'bold' }}> Talent Snapshot</div><br />
+                                    <div style={{ fontWeight: 'bold' }}> CURRENT EMPLOYER </div>
+                                    <div className=" ">ABC</div><br />
+                                    <div style={{ fontWeight: 'bold' }}> VISA STATUS </div>
+                                    <div className=" "> Citizen </div><br />
+                                    <div style={{ fontWeight: 'bold' }}> POSITION </div>
+                                    <div className=""> Software Developer </div><br />
+                                </div>
+
+                            </div> :
                             <div style={{ maxHeight: '250', maxWidth: '500px' }}>
 
                                 <ReactPlayer
@@ -66,21 +82,6 @@ export default class TalentCard extends React.Component {
                                     controls={true}
 
                                 />
-                            </div> :
-                            <div className="inline fields" style={{ paddingBottom: '0px' }}>
-                                <div className="image">
-                                    <img src="/images/background-img.png" height="250" width="250px" />
-                                </div>
-                                <div className="" style={{ paddingLeft: '20px' }}>
-                                    <div style={{ fontWeight: 'bold' }}> Talent Snapshot</div><br />
-                                    <div style={{ fontWeight: 'bold' }}> CURRENT EMPLOYER </div>
-                                    <div className=" ">{record.currentEmployment}</div><br />
-                                    <div style={{ fontWeight: 'bold' }}> VISA STATUS </div>
-                                    <div className=" "> {record.visa} </div><br />
-                                    <div style={{ fontWeight: 'bold' }}> POSITION </div>
-                                    <div className=""> {record.level} </div><br />
-                                </div>
-
                             </div> 
                         }
 
@@ -88,8 +89,8 @@ export default class TalentCard extends React.Component {
                 
                     <div className="extra1 content" style={{ paddingLeft: '50px', paddingRight: '50px' }}>
                         <a >{this.props.talentDetails.indexOf(record) === editedIndex && this.state.ishidden ?
-                            <Icon className="large user icon" onClick={() => this.userVideo(this.props.talentDetails.indexOf(record))} /> :
-                            <Icon className="large video icon"  onClick={() => this.userProfile(this.props.talentDetails.indexOf(record))} />
+                            <Icon className="large video icon" onClick={() => this.userVideo(this.props.talentDetails.indexOf(record))} /> :
+                            <Icon className="large user icon"  onClick={() => this.userProfile(this.props.talentDetails.indexOf(record))} />
                             }
                         </a>
 
